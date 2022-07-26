@@ -49,11 +49,11 @@ public class JFresultados extends javax.swing.JFrame {
 
         jLabel2.setBackground(new java.awt.Color(51, 51, 51));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setText("Alejandro Peña");
+        jLabel2.setText("-------------");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("1.000.000");
+        jLabel8.setText("000");
         jLabel8.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/medal1.png"))); // NOI18N
@@ -86,11 +86,11 @@ public class JFresultados extends javax.swing.JFrame {
         jPanel1.setBackground(java.awt.SystemColor.control);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel3.setText("Andres Venite ");
+        jLabel3.setText("-------------");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("800");
+        jLabel9.setText("000");
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/medal2.png"))); // NOI18N
 
@@ -122,11 +122,11 @@ public class JFresultados extends javax.swing.JFrame {
         jPanel3.setBackground(java.awt.SystemColor.control);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel6.setText("Carolina Paez");
+        jLabel6.setText("-------------");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel10.setText("300");
+        jLabel10.setText("000");
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/medal3.png"))); // NOI18N
 

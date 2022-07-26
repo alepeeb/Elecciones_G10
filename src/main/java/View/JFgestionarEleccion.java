@@ -12,10 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Mee
- */
+
 public class JFgestionarEleccion extends javax.swing.JFrame {
 
     CtlCandidato controladorCandidato;
