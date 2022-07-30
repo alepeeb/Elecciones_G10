@@ -131,15 +131,15 @@
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="txtTelefono" alignment="0" pref="200" max="32767" attributes="0"/>
-                                              <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="txtNombre" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labelTelefono" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labelDireccion" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labelCorreo" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labelDocumento" min="-2" max="-2" attributes="0"/>
                                               <Component id="txtDocumento" max="32767" attributes="0"/>
                                               <Component id="txtCorreo" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                                           </Group>
@@ -153,7 +153,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnAgregar" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnEditar" min="-2" pref="107" max="-2" attributes="0"/>
+                                  <Component id="btnEditar" min="-2" pref="118" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -167,8 +167,8 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelDocumento" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -177,8 +177,8 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelTelefono" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -186,7 +186,7 @@
                               <Component id="txtCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelDireccion" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txtDireccion" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="100" max="32767" attributes="0"/>
@@ -202,7 +202,7 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel2">
+                <Component class="javax.swing.JLabel" name="labelNombre">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Nombre*"/>
                   </Properties>
@@ -215,7 +215,7 @@
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel3">
+                <Component class="javax.swing.JLabel" name="labelDocumento">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="N&#xfa;mero documento*"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -229,7 +229,7 @@
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel4">
+                <Component class="javax.swing.JLabel" name="labelTelefono">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Tel&#xe9;fono*"/>
                   </Properties>
@@ -239,9 +239,9 @@
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel5">
+                <Component class="javax.swing.JLabel" name="labelCorreo">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Correo"/>
+                    <Property name="text" type="java.lang.String" value="Correo*"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtCorreo">
@@ -312,7 +312,7 @@
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel6">
+                <Component class="javax.swing.JLabel" name="labelDireccion">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Direcci&#xf3;n"/>
                   </Properties>

@@ -1,5 +1,6 @@
 package Model;
 
+import Classes.ClsMensaje;
 import Classes.ClsVotante;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,9 @@ public class MdlVotante {
         jdbc.CreConexion();
     }
 
-    public boolean agregarVotante(ClsVotante votante) {
+    public ClsMensaje agregarVotante(ClsVotante votante) {
+
+        ClsMensaje mensaje = new ClsMensaje();
 
         try {
             String sql = "INSERT INTO tbl_votantes  VALUES (?,?,?,?,?)";
@@ -30,10 +33,85 @@ public class MdlVotante {
 
             int resultado = sentencia.executeUpdate();
 
-            return true;
-        } catch (SQLException ex) {
-            return false;
+            if (resultado == 1) {
+                mensaje.CambiarMensaje(mensaje.OK, "Votante agregado exitosamente");
+            } else {
+
+                mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");
+            }
+
+            return mensaje;
+
+        } catch (SQLException e) {
+            mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+            return mensaje;
         }
+    }
+
+    //:::::::::::::::::::::::::: Eliminar
+    public ClsMensaje EliminarVotante(String idVotante) {
+
+        ClsMensaje mensaje = new ClsMensaje();
+
+        try {
+
+            String sql = "DELETE FROM tbl_votantes WHERE id_votante = ?";
+
+            PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
+            sentencia.setString(1, idVotante);
+
+            int resultado = sentencia.executeUpdate();
+
+            if (resultado == 1) {
+                mensaje.CambiarMensaje(mensaje.OK, "Votante eliminado exitosamente");
+            } else {
+
+                mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");
+            }
+
+            return mensaje;
+
+        } catch (Exception e) {
+
+            mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+            return mensaje;
+        }
+
+    }
+
+    // :::::::::::::::::::::: Actualizar 
+    public ClsMensaje ActualizarVotante(ClsVotante votante) {
+
+        ClsMensaje mensaje = new ClsMensaje();
+
+        try {
+
+            String sql = "UPDATE tbl_votantes SET nombre = ?, telefono = ?, correo = ?, direccion = ? WHERE id_votante = ?";
+
+            PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
+            sentencia.setString(1, votante.getNombre());
+            sentencia.setString(2, votante.getTelefono());
+            sentencia.setString(3, votante.getCorreo());
+
+            sentencia.setString(4, votante.getDireccion());
+            sentencia.setString(5, votante.getNumeroDocumento());
+
+            int resultado = sentencia.executeUpdate();
+
+            if (resultado == 1) {
+                mensaje.CambiarMensaje(mensaje.OK, "Votante actualizado exitosamente");
+            } else {
+
+                mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");
+            }
+
+            return mensaje;
+
+        } catch (Exception e) {
+            mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+            return mensaje;
+        }
+
     }
 
     public LinkedList<ClsVotante> ObtenerVotantes() {
@@ -67,48 +145,29 @@ public class MdlVotante {
         }
 
     }
-
-//:::::::::::::::::::::::::: Eliminar
-    public boolean EliminarVotante(String idVotante) {
+    
+    
+    public boolean UsurioExiste(String idVotante) {
 
         try {
 
-            String sql = "DELETE FROM tbl_votantes WHERE id_votante = ?";
+            String sql = "SELECT * FROM tbl_votantes WHERE id_votante = ?";
 
             PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
             sentencia.setString(1, idVotante);
 
-            int resultado = sentencia.executeUpdate();
-            return true;
+            ResultSet resultado = sentencia.executeQuery();
 
-        } catch (Exception e) {
+            if (resultado.next()) {
+                return true;
+            }
 
             return false;
-        }
 
-    }
+        } catch (SQLException e) {
 
-    // :::::::::::::::::::::: Actualizar 
-    public boolean ActualizarVotante(ClsVotante votante) {
-
-        try {
-
-            String sql = "UPDATE tbl_votantes SET nombre = ?, telefono = ?, correo = ?, direccion = ? WHERE id_votante = ?";
-
-            PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
-            sentencia.setString(1, votante.getNombre());
-            sentencia.setString(2, votante.getTelefono());  
-            sentencia.setString(3, votante.getCorreo());
-
-            sentencia.setString(4, votante.getDireccion());
-            sentencia.setString(5, votante.getNumeroDocumento());
-
-            int resultado = sentencia.executeUpdate();
-
+            System.out.println("Uy error" + e.getMessage());
             return true;
-
-        } catch (Exception e) {
-            return false;
         }
 
     }

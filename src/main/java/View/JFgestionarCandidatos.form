@@ -97,9 +97,6 @@
           </Properties>
         </Component>
         <Container class="javax.swing.JTabbedPane" name="Jtable">
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="JtableMouseClicked"/>
-          </Events>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
           <SubComponents>
@@ -122,44 +119,41 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="txtTelefono" alignment="0" pref="256" max="32767" attributes="0"/>
-                                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtNombre" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtDocumento" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtCorreo" alignment="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="txtMesajeC" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtCiudadOrigen" alignment="0" pref="200" max="32767" attributes="0"/>
-                                          <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="comboPartidos" alignment="0" pref="0" max="32767" attributes="0"/>
-                                          <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtDescripcion" alignment="0" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="299" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="btnNuevo" min="-2" pref="94" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnEditar" min="-2" pref="105" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnAgregar" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="txtTelefono" alignment="0" pref="256" max="32767" attributes="0"/>
+                              <Component id="labelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNombre" alignment="0" max="32767" attributes="0"/>
+                              <Component id="labelTelefono" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelCorreo" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelDocumento" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtDocumento" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtCorreo" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="17" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="txtMesajeC" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtCiudadOrigen" alignment="0" pref="200" max="32767" attributes="0"/>
+                                  <Component id="labelCiudadO" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="comboPartidos" alignment="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtDescripcion" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="316" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="377" max="32767" attributes="0"/>
+                          <Component id="btnNuevo" min="-2" pref="94" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnEliminar" min="-2" pref="106" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnEditar" min="-2" pref="119" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnAgregar" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -168,8 +162,8 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelCiudadO" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -179,11 +173,11 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelDocumento" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtDocumento" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelTelefono" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtTelefono" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -199,7 +193,7 @@
                           </Group>
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -207,57 +201,54 @@
                               <Component id="txtCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtMesajeC" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="75" max="32767" attributes="0"/>
+                          <EmptySpace pref="74" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnAgregar" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                               <Component id="btnEditar" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                               <Component id="btnEliminar" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                               <Component id="btnNuevo" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel2">
+                <Component class="javax.swing.JLabel" name="labelNombre">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Nombre"/>
+                    <Property name="text" type="java.lang.String" value="Nombre*"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtNombre">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel3">
+                <Component class="javax.swing.JLabel" name="labelDocumento">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="N&#xfa;mero documento"/>
+                    <Property name="text" type="java.lang.String" value="N&#xfa;mero documento*"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtDocumento">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel4">
+                <Component class="javax.swing.JLabel" name="labelTelefono">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Tel&#xe9;fono"/>
+                    <Property name="text" type="java.lang.String" value="Tel&#xe9;fono*"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtTelefono">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel5">
+                <Component class="javax.swing.JLabel" name="labelCorreo">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Correo"/>
+                    <Property name="text" type="java.lang.String" value="Correo*"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtCorreo">
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel7">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Partido pol&#xed;tico"/>
+                    <Property name="text" type="java.lang.String" value="Partido pol&#xed;tico*"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="comboPartidos">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="a0" green="a0" id="Control Shadow" palette="2" red="a0" type="palette"/>
-                    </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="21">
                         <StringItem index="0" value="Partido Liberal Colombiano"/>
@@ -285,16 +276,13 @@
                     </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboPartidosActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel8">
+                <Component class="javax.swing.JLabel" name="labelCiudadO">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Ciudad de origen"/>
+                    <Property name="text" type="java.lang.String" value="Ciudad de origen*"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtCiudadOrigen">
@@ -308,7 +296,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel11">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Mensaje Campa&#xf1;a"/>
+                    <Property name="text" type="java.lang.String" value="Mensaje Campa&#xf1;a*"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtMesajeC">
@@ -683,6 +671,7 @@
                           <Image iconType="3" name="/icons/edit.png"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Actulizar"/>
+                        <Property name="focusPainted" type="boolean" value="false"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editarPropuestaActionPerformed"/>
@@ -692,9 +681,6 @@
                       <Properties>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCodeActionPerformed"/>
-                      </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel10">
                       <Properties>

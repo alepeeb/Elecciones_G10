@@ -1,5 +1,6 @@
 package Controller;
 
+import Classes.ClsMensaje;
 import Classes.ClsVotante;
 import Model.MdlVotante;
 import java.util.LinkedList;
@@ -12,24 +13,29 @@ public class CtlVotante {
         this.modelo = new MdlVotante();
     }
 
-    public boolean agregarVotante(ClsVotante votante) {
+    public ClsMensaje agregarVotante(ClsVotante votante) {
 
-        boolean respuesta = this.modelo.agregarVotante(votante);
+        ClsMensaje respuesta = this.modelo.agregarVotante(votante);
 
         return respuesta;
     }
 
-    public boolean EliminarVotante(String votante) {
-        boolean respuesta = this.modelo.EliminarVotante(votante);
+    public ClsMensaje EliminarVotante(String votante) {
+        ClsMensaje respuesta = this.modelo.EliminarVotante(votante);
         return respuesta;
     }
 
     public LinkedList<ClsVotante> ObtenerVotantes() {
         return this.modelo.ObtenerVotantes();
     }
-    
-    public boolean ActualizarVotante(ClsVotante votante) {
-        boolean respuesta = this.modelo.ActualizarVotante(votante);
+
+    public ClsMensaje ActualizarVotante(ClsVotante votante) {
+        ClsMensaje respuesta = this.modelo.ActualizarVotante(votante);
+        return respuesta;
+    }
+
+    public boolean UsuarioExiste(String idVotante) {
+        boolean respuesta = this.modelo.UsurioExiste(idVotante);
         return respuesta;
     }
 }

@@ -24,8 +24,8 @@ public class CtlEleccion {
 
     }
 
-    public ClsMensaje EliminarEleccion(String id) {
-        ClsMensaje respuesta = this.modelo.EliminarEleccion(id);
+    public ClsMensaje EliminarEleccion(String idEleccion) {
+        ClsMensaje respuesta = this.modelo.EliminarEleccion(idEleccion);
         return respuesta;
     }
 
@@ -41,9 +41,22 @@ public class CtlEleccion {
         return respuesta;
 
     }
-    
+
     public ClsMensaje EliminarAsociacion(String idEleccion, String idCandidato) {
         ClsMensaje respuesta = this.modelo.EliminarAsociacion(idEleccion, idCandidato);
         return respuesta;
     }
+
+    public ClsMensaje ActualizarEleccion(ClsEleccion eleccion) {
+
+        ClsMensaje respuesta = this.modelo.ActualizarEleccion(eleccion);
+        return respuesta;
+    }
+    
+    public ClsMensaje ActualizaEstado(ClsEleccion eleccion) {
+
+        ClsMensaje respuesta = this.modelo.ActualizarEstado(eleccion);
+        return respuesta;
+    }
+
 }

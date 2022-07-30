@@ -3,22 +3,36 @@ package View;
 import Classes.ClsCandidato;
 import Classes.ClsEleccion;
 import Classes.ClsMensaje;
+import Classes.ClsVotacion;
 import Controller.CtlCandidato;
 import Controller.CtlEleccion;
+import Controller.CtlVotacion;
+import java.awt.HeadlessException;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 public class JFgestionarEleccion extends javax.swing.JFrame {
+
+    //Icono Mensaje Cambpos vacios
+    ImageIcon iconFormulario = new ImageIcon("src/main/resources/imgs/form.png");
+    //Icono Mensaje Good
+    ImageIcon iconGood = new ImageIcon("src/main/resources/imgs/thumbs-up.png");
+    //Icono Mensaje Warning
+    ImageIcon iconWarning = new ImageIcon("src/main/resources/imgs/warning.png");
 
     CtlCandidato controladorCandidato;
     CtlEleccion controladorEleccion;
+    CtlVotacion controladorVotacion;
 
     LinkedList<ClsEleccion> elecciones;
+    LinkedList<ClsVotacion> votos;
 
     public JFgestionarEleccion() {
         initComponents();
@@ -28,6 +42,8 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         this.controladorEleccion = new CtlEleccion();
         this.ObtenerCandidatos();
         this.ObtenerElecciones();
+
+        this.idEleccion.setVisible(false);
     }
 
     public void ObtenerCandidatos() {
@@ -70,12 +86,13 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) this.tblListaCandidatosElecciones.getModel();
 
         model.setRowCount(0);
+        
+        
 
         for (ClsCandidato candidato : lista) {
-
-            Object[] row = {candidato.getNumeroDocumento(), candidato.getNombre(), "", ""};
+            
+            Object[] row = {candidato.getNumeroDocumento(), candidato.getNombre(), candidato.getVotos(), ""};
             model.addRow(row);
-
         }
     }
 
@@ -83,6 +100,45 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
 
         this.elecciones = this.controladorEleccion.ObtenerElecciones();
         this.ActalizarTabla(elecciones);
+    }
+
+    public ClsEleccion BuscarEleccion(int idEleccion) {
+
+        for (ClsEleccion eleccion : this.elecciones) {
+
+            if (eleccion.getIdEleccion() == idEleccion) {
+                return eleccion;
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public void LimpiarCampos() {
+        this.txtNombreEleccion.setText("");
+        this.comboTipoEleccion.setSelectedIndex(0);
+        this.fechaInicio.setDate(null);
+        this.fechaFin.setDate(null);
+        this.idEleccion.setText("");
+
+        this.btnAgregar.setEnabled(true);
+    }
+
+    public boolean Validarfecha(String fechaInicio, String fechaFin) {
+        try {
+            // Verifica que la fecha inicio sea menor a la fecha fin
+            SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date1 = sdformat.parse(fechaInicio);
+            Date date2 = sdformat.parse(fechaFin);
+
+            if (date1.before(date2)) {
+                return true;
+            }
+        } catch (ParseException ex) {
+        }
+        return false;
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +155,7 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         CandidatosxEleccion = new javax.swing.JPanel();
-        EliminarAsociacion = new javax.swing.JToggleButton();
+        btnEliminarAsociacion = new javax.swing.JToggleButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblListaCandidatosElecciones = new javax.swing.JTable();
         comboCandidatos = new javax.swing.JComboBox<>();
@@ -117,6 +173,7 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         btnEliminarEleccion = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        idEleccion = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Elecciones");
@@ -151,12 +208,13 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         CandidatosxEleccion.setBackground(java.awt.SystemColor.menu);
         CandidatosxEleccion.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        EliminarAsociacion.setBackground(new java.awt.Color(255, 204, 204));
-        EliminarAsociacion.setText("Eliminar");
-        EliminarAsociacion.setFocusPainted(false);
-        EliminarAsociacion.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminarAsociacion.setBackground(new java.awt.Color(255, 204, 204));
+        btnEliminarAsociacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/trash.png"))); // NOI18N
+        btnEliminarAsociacion.setText("Eliminar");
+        btnEliminarAsociacion.setFocusPainted(false);
+        btnEliminarAsociacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarAsociacionActionPerformed(evt);
+                btnEliminarAsociacionActionPerformed(evt);
             }
         });
 
@@ -179,7 +237,14 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tblListaCandidatosElecciones);
 
         comboCandidatos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCandidatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboCandidatosActionPerformed(evt);
+            }
+        });
 
+        btnAsociar.setBackground(java.awt.SystemColor.controlHighlight);
+        btnAsociar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/enlace.png"))); // NOI18N
         btnAsociar.setText("Asociar");
         btnAsociar.setFocusPainted(false);
         btnAsociar.addActionListener(new java.awt.event.ActionListener() {
@@ -196,17 +261,21 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
             CandidatosxEleccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CandidatosxEleccionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(CandidatosxEleccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(CandidatosxEleccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel7)
-                        .addComponent(comboCandidatos, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(CandidatosxEleccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CandidatosxEleccionLayout.createSequentialGroup()
-                        .addComponent(btnAsociar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(EliminarAsociacion, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(16, 16, 16))
+                        .addGap(0, 15, Short.MAX_VALUE)
+                        .addComponent(jLabel7)
+                        .addGap(149, 149, 149))
+                    .addGroup(CandidatosxEleccionLayout.createSequentialGroup()
+                        .addGroup(CandidatosxEleccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(comboCandidatos, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CandidatosxEleccionLayout.createSequentialGroup()
+                                .addComponent(btnAsociar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnEliminarAsociacion, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         CandidatosxEleccionLayout.setVerticalGroup(
             CandidatosxEleccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,7 +288,7 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
                         .addComponent(comboCandidatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(CandidatosxEleccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(EliminarAsociacion, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEliminarAsociacion, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAsociar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -232,6 +301,7 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         jLabel5.setText("Lista de elecciones");
 
         btnAgregar.setBackground(new java.awt.Color(204, 255, 204));
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/agregar.png"))); // NOI18N
         btnAgregar.setText("Agregar");
         btnAgregar.setFocusPainted(false);
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -241,7 +311,9 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         });
 
         btnActualizar.setBackground(new java.awt.Color(204, 204, 255));
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
+        btnActualizar.setEnabled(false);
         btnActualizar.setFocusPainted(false);
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -275,6 +347,8 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tblListaElecciones);
 
+        btnCerrar.setBackground(java.awt.SystemColor.controlHighlight);
+        btnCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cerrar.png"))); // NOI18N
         btnCerrar.setText("Cerrar");
         btnCerrar.setFocusPainted(false);
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -284,6 +358,7 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         });
 
         btnEliminarEleccion.setBackground(new java.awt.Color(255, 204, 204));
+        btnEliminarEleccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/trash.png"))); // NOI18N
         btnEliminarEleccion.setText("Eliminar");
         btnEliminarEleccion.setFocusPainted(false);
         btnEliminarEleccion.addActionListener(new java.awt.event.ActionListener() {
@@ -292,6 +367,8 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
             }
         });
 
+        btnEditar.setBackground(java.awt.SystemColor.controlHighlight);
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.setFocusPainted(false);
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -306,30 +383,33 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
             Lista_eleccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Lista_eleccionesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 677, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(Lista_eleccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminarEleccion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCerrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(Lista_eleccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnEliminarEleccion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(btnCerrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(23, 23, 23))
         );
         Lista_eleccionesLayout.setVerticalGroup(
             Lista_eleccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Lista_eleccionesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(Lista_eleccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Lista_eleccionesLayout.createSequentialGroup()
+                .addGroup(Lista_eleccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(Lista_eleccionesLayout.createSequentialGroup()
                         .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEliminarEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(12, 12, 12)
+                        .addComponent(btnEliminarEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel6.setText("Lista candidatos por elección");
+
+        idEleccion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        idEleccion.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -337,68 +417,74 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel5)
-                        .addComponent(Lista_elecciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(CandidatosxEleccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(Title)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnRegresar))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
-                                .addComponent(txtNombreEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(30, 30, 30)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(comboTipoEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
-                                .addComponent(fechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4)
-                                .addComponent(fechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(49, 49, 49)
-                            .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnActualizar))))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(Title)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRegresar)
+                        .addGap(18, 18, 18)
+                        .addComponent(idEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNombreEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboTipoEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(fechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAgregar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnActualizar))
+                            .addComponent(jLabel6)
+                            .addComponent(CandidatosxEleccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Lista_elecciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(idEleccion))
                     .addComponent(Title))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboTipoEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNombreEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(fechaInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(12, 12, 12)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboTipoEleccion)
+                            .addComponent(txtNombreEleccion))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Lista_elecciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -433,37 +519,72 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
             int column = 0;
             int row = this.tblListaElecciones.getSelectedRow();
             String idEleccion = this.tblListaElecciones.getModel().getValueAt(row, column).toString();
-
+            
             ClsMensaje mensaje = this.controladorEleccion.EliminarEleccion(idEleccion);
 
             if (mensaje.getTipo().equals(mensaje.OK)) {
                 this.ObtenerElecciones();
+                JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconWarning);
             }
 
-        } catch (ArrayIndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(rootPane, "Debes seleccionar una una elección"
-                    + " y esta no debe tener candidatos asociados.");
+        } catch (Exception en) {
+
+            String msg = "Debes seleccionar una una elección y esta no debe tener candidatos asociados";
+            JOptionPane.showMessageDialog(rootPane, msg, null, 2, iconWarning);
+
         }
+
+
     }//GEN-LAST:event_btnEliminarEleccionActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
-        // TODO add your handling code here:
+
+        try {
+
+            int column = 0;
+            int row = this.tblListaElecciones.getSelectedRow();
+            String id = this.tblListaElecciones.getModel().getValueAt(row, column).toString();
+            int idEleccion = Integer.parseInt(id);
+            String estado = "Cerrado";
+
+            int opction = JOptionPane.showConfirmDialog(rootPane, "¿Está seguro que quiere cerrar esta elección?, "
+                    + "\n una vez cerrada no se podra votar.", "Advertencia", 2, 1, iconWarning);
+            if (opction == 0) {
+
+                ClsEleccion estadoE = new ClsEleccion(idEleccion, estado);
+                ClsMensaje mensaje = this.controladorEleccion.ActualizaEstado(estadoE);
+
+                if (mensaje.getTipo().equals(mensaje.OK)) {
+                    this.ObtenerElecciones();
+                    this.LimpiarCampos();
+
+                    JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
+                }
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Debes seleccionar una elección", null, 2, iconWarning);
+        }
+
+
     }//GEN-LAST:event_btnCerrarActionPerformed
 
-    private void EliminarAsociacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarAsociacionActionPerformed
+    private void btnEliminarAsociacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAsociacionActionPerformed
+
         try {
 
             // Eleccion
             int column = 0;
             int row = this.tblListaElecciones.getSelectedRow();
-            String idEleccion =this.tblListaElecciones.getModel().getValueAt(row, column).toString();
-            System.out.println(idEleccion);
+            String idEleccion = this.tblListaElecciones.getModel().getValueAt(row, column).toString();
 
             //candidatos
             int column_ = 0;
             int row_ = this.tblListaCandidatosElecciones.getSelectedRow();
             String idCandidato = this.tblListaCandidatosElecciones.getModel().getValueAt(row_, column_).toString();
-            System.out.println(idCandidato);
 
             ClsMensaje mensaje = this.controladorEleccion.EliminarAsociacion(idEleccion, idCandidato);
 
@@ -472,11 +593,12 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
                 this.ActualizarTablaCandidatosEleccion(lista);
             }
 
+            JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
+
         } catch (ArrayIndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(rootPane, "Debes seleccionar una una elección"
-                    + " y esta no debe tener candidatos asociados.");
+            JOptionPane.showMessageDialog(rootPane, "Debes seleccionar una candidato", null, 2, iconWarning);
         }
-    }//GEN-LAST:event_EliminarAsociacionActionPerformed
+    }//GEN-LAST:event_btnEliminarAsociacionActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         JFmenuPrincipal menuP = new JFmenuPrincipal();
@@ -486,47 +608,123 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
-        String nombre = this.txtNombreEleccion.getText();
-        String tipo = this.comboTipoEleccion.getSelectedItem().toString();
+        try {
 
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-        String fechaInicio = formatoFecha.format(this.fechaInicio.getDate());
-        String fechaFin = formatoFecha.format(this.fechaFin.getDate());
+            String nombre = this.txtNombreEleccion.getText();
+            String tipo = this.comboTipoEleccion.getSelectedItem().toString();
 
-        ClsEleccion eleccion = new ClsEleccion(nombre, tipo, fechaInicio, fechaFin, "Creado");
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+            String fechaInicio = formatoFecha.format(this.fechaInicio.getDate());
+            String fechaFin = formatoFecha.format(this.fechaFin.getDate());
 
-        ClsMensaje respuesta = this.controladorEleccion.AgregarEleccion(eleccion);
+            if (nombre.equals("") || fechaInicio.equals("") || fechaFin.equals("")) {
 
-        if (respuesta.getTipo().equals(ClsMensaje.OK)) {
-            this.ObtenerElecciones();
+                JOptionPane.showMessageDialog(rootPane, "Debe completar todos los campos", null, 2, iconFormulario);
+
+            } else {
+
+                if (Validarfecha(fechaInicio, fechaFin)) {
+
+                    ClsEleccion eleccion = new ClsEleccion(nombre, tipo, fechaInicio, fechaFin, "Creado");
+                    ClsMensaje mensaje = this.controladorEleccion.AgregarEleccion(eleccion);
+
+                    if (mensaje.getTipo().equals(ClsMensaje.OK)) {
+                        this.ObtenerElecciones();
+                    }
+                    JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
+
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "La fecha de inicio debe ser menor a la fecha fin", null, 2, iconWarning);
+                }
+            }
+
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(rootPane, "Debe digelenciar todos los campos", null, 2, iconFormulario);
         }
-
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        // TODO add your handling code here:
+
+        try {
+
+            int idEleccion = Integer.parseInt(this.idEleccion.getText());
+            ClsEleccion eleccion = this.BuscarEleccion(idEleccion);
+
+            String nombre = this.txtNombreEleccion.getText();
+            eleccion.setNombre(nombre);
+
+            String tipo = this.comboTipoEleccion.getSelectedItem().toString();
+            eleccion.setTipo(tipo);
+
+            // Formato fecha
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+            String fechaInicio = formatoFecha.format(this.fechaInicio.getDate());
+            eleccion.setFechaInicio(fechaInicio);
+            String fechaFin = formatoFecha.format(this.fechaFin.getDate());
+            eleccion.setFechaFin(fechaFin);
+
+            if (nombre.equals("") || fechaInicio.equals("") || fechaFin.equals("")) {
+
+                JOptionPane.showMessageDialog(rootPane, "Debe completar todos los campos", null, 2, iconFormulario);
+
+            } else {
+
+                if (Validarfecha(fechaInicio, fechaFin)) {
+
+                    ClsMensaje mensaje = this.controladorEleccion.ActualizarEleccion(eleccion);
+
+                    if (mensaje.getTipo().equals(ClsMensaje.OK)) {
+                        this.ObtenerElecciones();
+                        this.LimpiarCampos();
+                    }
+                    JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
+
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "La fecha de inicio debe ser menor a la fecha fin", null, 2, iconWarning);
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Debe digelenciar todos los campos", null, 2, iconFormulario);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
 
-//TO-DO completar esta parte
-
-        int column = 0;
-        int row = this.tblListaElecciones.getSelectedRow();
-        String idEleccion = this.tblListaElecciones.getModel().getValueAt(row, column).toString();
-        //ClsEleccion eleccion = this.BuscarElleccion(idEleccion);
-
         try {
-            String date = "13 Oct 2016";
-            Date date2 = new SimpleDateFormat("dd MMM yyyy").parse(date);
-            this.fechaInicio.setDate(date2);
+            int row = this.tblListaElecciones.getSelectedRow();
+            String fechaInicio = this.tblListaElecciones.getModel().getValueAt(row, 3).toString();
+            String fechaFin = this.tblListaElecciones.getModel().getValueAt(row, 4).toString();
+
+            String nombre = this.tblListaElecciones.getModel().getValueAt(row, 1).toString();
+            String tipo = this.tblListaElecciones.getModel().getValueAt(row, 2).toString();
+            String idPropuesta = this.tblListaElecciones.getModel().getValueAt(row, 0).toString();
+
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                Date fechaI = formatoFecha.parse(fechaInicio);
+                Date fechaF = formatoFecha.parse(fechaFin);
+
+                this.fechaInicio.setDate(fechaI);
+                this.fechaFin.setDate(fechaF);
+                this.txtNombreEleccion.setText(nombre);
+                this.comboTipoEleccion.setSelectedItem(tipo);
+                this.idEleccion.setText(idPropuesta);
+
+                this.btnAgregar.setEnabled(false);
+                this.btnActualizar.setEnabled(true);
+            } catch (ParseException e) {
+
+            }
         } catch (Exception e) {
-            System.out.println(e);
+            JOptionPane.showMessageDialog(rootPane, "Debe seccionar una elección", null, 2, iconWarning);
         }
 
 
     }//GEN-LAST:event_btnEditarActionPerformed
+
 
     private void btnAsociarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsociarActionPerformed
 
@@ -538,7 +736,6 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
             String[] partesComboCandidato = this.comboCandidatos.getSelectedItem().toString().split("-", 2);
 
             String idCandidato = partesComboCandidato[1];
-            System.out.println(idCandidato);
 
             ClsMensaje mensaje = this.controladorEleccion.AsociarCandidato(idEleccion, idCandidato);
 
@@ -549,21 +746,28 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
                 this.ActualizarTablaCandidatosEleccion(lista);
             }
 
-            JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion());
+            JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
         } catch (ArrayIndexOutOfBoundsException e) {
 
-            JOptionPane.showMessageDialog(rootPane, "Debes seleccionar una elección");
+            JOptionPane.showMessageDialog(rootPane, "Debes seleccionar una candidato", null, 2, iconWarning);
         }
+
     }//GEN-LAST:event_btnAsociarActionPerformed
 
     private void tblListaEleccionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListaEleccionesMouseClicked
+
         int column = 0;
         int row = this.tblListaElecciones.getSelectedRow();
         String idEleccion = this.tblListaElecciones.getModel().getValueAt(row, column).toString();
 
         LinkedList<ClsCandidato> lista = this.controladorEleccion.ObtenerCandidatosEleccion(idEleccion);
         this.ActualizarTablaCandidatosEleccion(lista);
+
     }//GEN-LAST:event_tblListaEleccionesMouseClicked
+
+    private void comboCandidatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCandidatosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboCandidatosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -602,7 +806,6 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CandidatosxEleccion;
-    private javax.swing.JToggleButton EliminarAsociacion;
     private javax.swing.JPanel Lista_elecciones;
     private javax.swing.JLabel Title;
     private javax.swing.JToggleButton btnActualizar;
@@ -610,12 +813,14 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
     private javax.swing.JButton btnAsociar;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnEditar;
+    private javax.swing.JToggleButton btnEliminarAsociacion;
     private javax.swing.JButton btnEliminarEleccion;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> comboCandidatos;
     private javax.swing.JComboBox<String> comboTipoEleccion;
     private com.toedter.calendar.JDateChooser fechaFin;
     private com.toedter.calendar.JDateChooser fechaInicio;
+    private javax.swing.JTextField idEleccion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -1,7 +1,5 @@
 package Classes;
 
-import java.util.LinkedList;
-
 public class ClsEleccion {
 
     private int idEleccion;
@@ -29,7 +27,11 @@ public class ClsEleccion {
         this.estado = estado;
         this.ganador = ganador;
     }
-    
+
+    public ClsEleccion(int idEleccion, String estado) {
+        this.idEleccion = idEleccion;
+        this.estado = estado;
+    }
 
     public int getIdEleccion() {
         return idEleccion;

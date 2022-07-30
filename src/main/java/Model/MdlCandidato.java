@@ -19,10 +19,12 @@ public class MdlCandidato {
     }
 
 // :::::::::::::::::::::::::: Agregar Candidato
-    
-    public boolean AgregarCandidato(ClsCandidato candidato) {
+    public ClsMensaje AgregarCandidato(ClsCandidato candidato) {
+
+        ClsMensaje mensaje = new ClsMensaje();
 
         try {
+
             String sql = "INSERT INTO tbl_candidatos  VALUES (?,?,?,?,?,?,?,?,NULL)";
 
             PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
@@ -39,14 +41,21 @@ public class MdlCandidato {
 
             int resultado = sentencia.executeUpdate();
 
-            return true;
-        } catch (SQLException ex) {
-            return false;
+            if (resultado == 1) {
+                mensaje.CambiarMensaje(mensaje.OK, "Has agregado un nuevo candidato");
+            } else {
+
+                mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");
+            }
+
+            return mensaje;
+        } catch (SQLException e) {
+            mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+            return mensaje;
         }
     }
 
 // :::::::::::::::::::::::::: Obtener Candidato
-    
     public LinkedList<ClsCandidato> ObtenerCandidatos() {
 
         try {
@@ -65,11 +74,12 @@ public class MdlCandidato {
                 String correo = resultados.getString("correo");
                 String partidoPolitico = resultados.getString("partido_politico");
                 String ciudadOrigen = resultados.getString("ciudad_origen");
-                //String descripcion = resultados.getString("descripcion");
+                String descripcion = resultados.getString("descripcion");
                 String mensajeCampania = resultados.getString("mensaje_campania");
                 //String propuestas = resultados.getString("propuestas");
 
-                ClsCandidato candi = new ClsCandidato(numeroDocumento, nombre, telefono, correo, partidoPolitico, ciudadOrigen, correo, mensajeCampania);
+                //ClsCandidato candi = new ClsCandidato(numeroDocumento, nombre, telefono, correo, partidoPolitico, ciudadOrigen, correo, mensajeCampania);
+                ClsCandidato candi = new ClsCandidato(numeroDocumento, nombre, telefono, correo, partidoPolitico, ciudadOrigen, descripcion, mensajeCampania);
                 listaCandidatos.add(candi);
 
             }
@@ -83,8 +93,9 @@ public class MdlCandidato {
     }
 
 //::::::::::::::::::::::: Eliminar  Candidato
-    
-    public boolean EliminarCandidato(String idCandidato) {
+    public ClsMensaje EliminarCandidato(String idCandidato) {
+
+        ClsMensaje mensaje = new ClsMensaje();
 
         try {
 
@@ -94,22 +105,31 @@ public class MdlCandidato {
             sentencia.setString(1, idCandidato);
 
             int resultado = sentencia.executeUpdate();
-            return true;
+
+            if (resultado == 1) {
+                mensaje.CambiarMensaje(mensaje.OK, "Has elimando al candidato exitosamente");
+            } else {
+
+                mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");
+            }
+
+            return mensaje;
 
         } catch (Exception e) {
-
-            return false;
+            mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+            return mensaje;
         }
 
     }
 
 // :::::::::::::::::::::: Actualizar Candidato
-    
-    public boolean ActualizarCandidato(ClsCandidato candidato) {
+    public ClsMensaje ActualizarCandidato(ClsCandidato candidato) {
+
+        ClsMensaje mensaje = new ClsMensaje();
 
         try {
 
-            String sql = "UPDATE tbl_candidatos SET nombre = ?, correo = ?, telefono = ?, ciudad_origen = ?, partido_politico = ?, mensaje_campania = ? where id_candidato = ?";
+            String sql = "UPDATE tbl_candidatos SET nombre = ?, correo = ?, telefono = ?, ciudad_origen = ?, partido_politico = ?, mensaje_campania = ?, descripcion = ? where id_candidato = ?";
 
             PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
             sentencia.setString(1, candidato.getNombre());
@@ -118,24 +138,29 @@ public class MdlCandidato {
             sentencia.setString(4, candidato.getCiudadrigen());
             sentencia.setString(5, candidato.getPartidoPolitico());
             sentencia.setString(6, candidato.getMensajeCampania());
-            sentencia.setString(7, candidato.getNumeroDocumento());
+            sentencia.setString(7, candidato.getDescripcion());
+            sentencia.setString(8, candidato.getNumeroDocumento());
 
             int resultado = sentencia.executeUpdate();
 
-            return true;
+            if (resultado == 1) {
+                mensaje.CambiarMensaje(mensaje.OK, "Has editado al candidato exitosamente");
+            } else {
+
+                mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");
+            }
+
+            return mensaje;
 
         } catch (Exception e) {
-            return false;
+            mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+            return mensaje;
         }
 
     }
-    
 
 //::::::::::::::::::::::::::: PROPUESTAS
-    
-    
 //:::::::::: Agregar Propuesta
-    
     public ClsMensaje AgregarPropuesta(ClsPropuesta propuesta) {
 
         ClsMensaje mensaje = new ClsMensaje();
@@ -173,7 +198,6 @@ public class MdlCandidato {
     }
 
 //:::::::::: Obtener Propuestas
-    
     public LinkedList<ClsPropuesta> ObtenerPropuestas(String idCandidato) {
 
         try {
@@ -206,9 +230,8 @@ public class MdlCandidato {
         }
 
     }
-    
-//:::::::::::::::::::: Eliminar propuesta
 
+//:::::::::::::::::::: Eliminar propuesta
     public ClsMensaje EliminarPropuesta(String idPropuesta) {
 
         ClsMensaje mensaje = new ClsMensaje();
@@ -225,7 +248,7 @@ public class MdlCandidato {
             if (resultado == 1) {
                 mensaje.CambiarMensaje(mensaje.OK, "Has eliminado la propuesta con ID: " + idPropuesta);
             } else {
- 
+
                 mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");
             }
 
@@ -237,9 +260,8 @@ public class MdlCandidato {
         }
 
     }
-    
-//::::::::::::::::::::::::: Actualizar Propuesta
 
+//::::::::::::::::::::::::: Actualizar Propuesta
     public ClsMensaje ActualizarPropuesta(ClsPropuesta propuesta) {
         ClsMensaje mensaje = new ClsMensaje();
 

@@ -1,12 +1,22 @@
 package View;
 
+import Classes.ClsMensaje;
 import Classes.ClsVotante;
 import Controller.CtlVotante;
+import java.awt.Color;
 import java.util.LinkedList;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class JFagregarVotantes extends javax.swing.JFrame {
+
+    //Icono Mensaje Cambpos vacios
+    ImageIcon iconFormulario = new ImageIcon("src/main/resources/imgs/form.png");
+    //Icono Mensaje Good
+    ImageIcon iconGood = new ImageIcon("src/main/resources/imgs/thumbs-up.png");
+    //Icono Mensaje Warning
+    ImageIcon iconWarning = new ImageIcon("src/main/resources/imgs/warning.png");
 
     LinkedList<ClsVotante> votantes = new LinkedList<>();
     CtlVotante controlador;
@@ -68,6 +78,49 @@ public class JFagregarVotantes extends javax.swing.JFrame {
         this.txtDireccion.setText("");
     }
 
+// :::::::::::: Validaciones
+    public boolean Validaciones(int tipo, String campo) {
+
+        switch (tipo) {
+            case 1: // nombre
+                if (campo.matches("^[a-zA-ZÀ-ÿ\\s]{1,40}$")) {
+                    this.labelNombre.setForeground(Color.black);
+                    return true;
+                } else {
+                    this.labelNombre.setForeground(Color.red);
+                }
+                break;
+            case 2: // Documento
+                if (campo.matches("[0-9]*")) {
+                    this.labelDocumento.setForeground(Color.black);
+                    return true;
+                } else {
+                    this.labelDocumento.setForeground(Color.red);
+                }
+                break;
+            case 3: // Teléfono
+                if (campo.matches("^\\d{7,10}$")) {
+                    this.labelTelefono.setForeground(Color.black);
+                    return true;
+                } else {
+                    this.labelTelefono.setForeground(Color.red);
+                }
+                break;
+            case 4: // Correo
+                if (campo.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
+                    this.labelCorreo.setForeground(Color.black);
+                    return true;
+                } else {
+                    this.labelCorreo.setForeground(Color.red);
+                }
+                break;
+            default:
+                throw new AssertionError();
+        }
+
+        return false;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -76,18 +129,18 @@ public class JFagregarVotantes extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         JtableVotante = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        labelNombre = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        labelDocumento = new javax.swing.JLabel();
         txtDocumento = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        labelTelefono = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        labelCorreo = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
+        labelDireccion = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         btnNuevo = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -111,7 +164,7 @@ public class JFagregarVotantes extends javax.swing.JFrame {
 
         jPanel2.setBackground(java.awt.SystemColor.control);
 
-        jLabel2.setText("Nombre*");
+        labelNombre.setText("Nombre*");
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,8 +172,8 @@ public class JFagregarVotantes extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Número documento*");
-        jLabel3.setToolTipText("");
+        labelDocumento.setText("Número documento*");
+        labelDocumento.setToolTipText("");
 
         txtDocumento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,9 +181,9 @@ public class JFagregarVotantes extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Teléfono*");
+        labelTelefono.setText("Teléfono*");
 
-        jLabel5.setText("Correo");
+        labelCorreo.setText("Correo*");
 
         btnAgregar.setBackground(new java.awt.Color(204, 255, 204));
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -165,7 +218,7 @@ public class JFagregarVotantes extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Dirección");
+        labelDireccion.setText("Dirección");
 
         btnNuevo.setBackground(java.awt.SystemColor.controlHighlight);
         btnNuevo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -191,14 +244,14 @@ public class JFagregarVotantes extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                    .addComponent(jLabel2)
+                                    .addComponent(labelNombre)
                                     .addComponent(txtNombre)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel6))
+                                    .addComponent(labelTelefono)
+                                    .addComponent(labelDireccion))
                                 .addGap(42, 42, 42)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel3)
+                                    .addComponent(labelCorreo)
+                                    .addComponent(labelDocumento)
                                     .addComponent(txtDocumento)
                                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 316, Short.MAX_VALUE))
@@ -208,7 +261,7 @@ public class JFagregarVotantes extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar)))
                 .addGap(30, 30, 30))
@@ -218,22 +271,22 @@ public class JFagregarVotantes extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(labelNombre)
+                    .addComponent(labelDocumento))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(labelTelefono)
+                    .addComponent(labelCorreo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel6)
+                .addComponent(labelDireccion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
@@ -369,18 +422,40 @@ public class JFagregarVotantes extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
-        String numeroDocumento = txtDocumento.getText();
         String nombre = txtNombre.getText();
+        String numeroDocumento = txtDocumento.getText();
         String telefono = txtTelefono.getText();
         String correo = txtCorreo.getText();
         String direccion = txtDireccion.getText();
 
-        ClsVotante votante = new ClsVotante(numeroDocumento, nombre, telefono, correo, direccion);
+        if (txtNombre.getText().equals("") || txtDocumento.getText().equals("") || txtTelefono.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Debe completar los campos obligatorios (*)", null, 2, iconFormulario);
+        } else {
 
-        this.controlador.agregarVotante(votante);
-        this.ObtenerVotantes();
-        LimbiarCampos();
+            boolean a = Validaciones(1, nombre);
+            boolean b = Validaciones(2, numeroDocumento);
+            boolean c = Validaciones(3, telefono);
+            boolean d = Validaciones(4, correo);
 
+            if (a && b && c && d) {
+
+                boolean existe = controlador.UsuarioExiste(numeroDocumento);
+                
+                if (existe) {
+                    JOptionPane.showMessageDialog(rootPane, "Ya existe un usuario con este número de documento", null, 2, iconWarning);
+                } else {
+                    
+                    ClsVotante votante = new ClsVotante(numeroDocumento, nombre, telefono, correo, direccion);
+                    ClsMensaje mensaje = this.controlador.agregarVotante(votante);
+
+                    if (mensaje.getTipo().equals(mensaje.OK)) {
+                        this.ObtenerVotantes();
+                        LimbiarCampos();
+                        JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
+                    }
+                }
+            }
+        }
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -406,27 +481,60 @@ public class JFagregarVotantes extends javax.swing.JFrame {
         String direccion = this.txtDireccion.getText();
         votante.setDireccion(direccion);
 
-        this.controlador.ActualizarVotante(votante);
-        this.ObtenerVotantes();
+        if (txtNombre.getText().equals("") || txtDocumento.getText().equals("") || txtTelefono.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Debe completar los campos obligatorios (*)", null, 2, iconFormulario);
+        } else {
+
+            boolean a = Validaciones(1, nombre);
+            boolean b = Validaciones(2, numeroDocumento);
+            boolean c = Validaciones(3, telefono);
+            boolean d = Validaciones(4, correo);
+
+            if (a && b && c && d) {
+                
+                ClsMensaje mensaje = this.controlador.ActualizarVotante(votante);
+                if (mensaje.getTipo().equals(mensaje.OK)) {
+
+                    this.ObtenerVotantes();
+                    LimbiarCampos();
+
+                    this.btnEliminar.setVisible(false);
+                    this.btnEditar.setVisible(false);
+                    this.btnNuevo.setVisible(false);
+                    this.btnAgregar.setVisible(true);
+                }
+                JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
+            }
+
+        }
+
 
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-        int opction = JOptionPane.showConfirmDialog(rootPane, "¿desea eliminar a este votante?");
+        int opctionSelected = JOptionPane.showConfirmDialog(rootPane, "¿Esta seguro que quiere eliminar este votante?", null, 2, 1, iconWarning);
 
-        if (opction == 0) {
+        if (opctionSelected == 0) {
             int column = 0;
             int row = this.tblVotante.getSelectedRow();
             String cedula = this.tblVotante.getModel().getValueAt(row, column).toString();
-            this.controlador.EliminarVotante(cedula);
-            this.ObtenerVotantes();
 
-            JOptionPane.showMessageDialog(rootPane, "Votante eliminado exitosamente");
-            this.txtDocumento.enable();
-            this.LimbiarCampos();
+            ClsMensaje mensaje = this.controlador.EliminarVotante(cedula);
+
+            if (mensaje.getTipo().equals(mensaje.OK)) {
+
+                this.ObtenerVotantes();
+
+                this.txtDocumento.enable();
+                this.btnEliminar.setVisible(false);
+                this.btnEditar.setVisible(false);
+                this.btnNuevo.setVisible(false);
+                this.btnAgregar.setVisible(true);
+                this.LimbiarCampos();
+            }
+            JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
         }
-
 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -499,8 +607,6 @@ public class JFagregarVotantes extends javax.swing.JFrame {
         this.btnNuevo.setVisible(false);
         this.btnAgregar.setVisible(true);
 
-        LimbiarCampos();
-
         this.txtDocumento.enable();
 
         LimbiarCampos();
@@ -551,15 +657,15 @@ public class JFagregarVotantes extends javax.swing.JFrame {
     private javax.swing.JTextField buscarField;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelCorreo;
+    private javax.swing.JLabel labelDireccion;
+    private javax.swing.JLabel labelDocumento;
+    private javax.swing.JLabel labelNombre;
+    private javax.swing.JLabel labelTelefono;
     public javax.swing.JTable tblVotante;
     public javax.swing.JTextField txtCorreo;
     public javax.swing.JTextField txtDireccion;

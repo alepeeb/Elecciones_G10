@@ -10,6 +10,15 @@ public class ClsCandidato extends ClsPersona {
     private String mensajeCampania;
     //private String propuestas;
     private LinkedList<ClsPropuesta> propuestas;
+    private String votos;
+
+    public String getVotos() {
+        return votos;
+    }
+
+    public void setVotos(String votos) {
+        this.votos = votos;
+    }
 
     public ClsCandidato(String numeroDocumento, String nombre, String telefono, String correo, String partidoPolitico, String ciudadrigen,String descripcion, String mensajeCampania) {
         super(numeroDocumento, nombre, telefono, correo);

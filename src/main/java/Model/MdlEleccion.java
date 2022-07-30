@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.LinkedList;
-import javax.swing.JOptionPane;
 
 public class MdlEleccion {
 
@@ -110,8 +109,16 @@ public class MdlEleccion {
 
             return mensaje;
 
-        } catch (Exception e) {
-            mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+        } catch (SQLException e) {
+
+            if (e.getErrorCode() == 1451) {
+                mensaje.CambiarMensaje(mensaje.ERROR, "No se puede elimar esta elección porque hay candidatos asociados");
+                e.getErrorCode();
+            } else {
+                mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+                e.getErrorCode();
+            }
+
             return mensaje;
         }
 
@@ -158,9 +165,11 @@ public class MdlEleccion {
 
             LinkedList<ClsCandidato> listaCandidatos = new LinkedList<>();
 
-            String sql = "SELECT tc.*  FROM tbl_cadidatosxeleccion tcxe, "
-                    + "tbl_candidatos tc WHERE tcxe.id_eleccion = ? AND "
-                    + " tcxe.id_candidato = tc.id_candidato ";
+            String sql = "SELECT tc.*, tv.votos FROM tbl_cadidatosxeleccion tcxe, tbl_candidatos tc,\n"
+                    + "(SELECT id_candidato, COUNT(*) AS votos FROM `tbl_votos` GROUP BY id_candidato) tv\n"
+                    + "WHERE tcxe.id_eleccion = ? AND\n"
+                    + "tcxe.id_candidato = tc.id_candidato AND\n"
+                    + "tc.id_candidato = tv.id_candidato";
 
             PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
             sentencia.setString(1, idEleccion);
@@ -177,8 +186,10 @@ public class MdlEleccion {
                 //String descripcion = resultados.getString("descripcion");
                 String mensajeCampania = resultados.getString("mensaje_campania");
                 //String propuestas = resultados.getString("propuestas");
+                String votos = resultados.getString("votos");
 
                 ClsCandidato candi = new ClsCandidato(numeroDocumento, nombre, telefono, correo, partidoPolitico, ciudadOrigen, correo, mensajeCampania);
+                candi.setVotos(votos);
                 listaCandidatos.add(candi);
 
             }
@@ -200,17 +211,85 @@ public class MdlEleccion {
 
         try {
             int idE = Integer.parseInt(idEleccion);
-            String sql = "DELETE FROM tbl_cadidatosxeleccion WHERE id_eleccion = ? AND id_candidato = ?";
+            
+            String sql = "DELETE tbl_votos,tbl_cadidatosxeleccion FROM tbl_votos INNER JOIN\n"
+                    + "tbl_cadidatosxeleccion ON tbl_cadidatosxeleccion.id_eleccion = tbl_votos.id_eleccion AND\n"
+                    + "tbl_cadidatosxeleccion.id_candidato = tbl_votos.id_candidato\n"
+                    + "WHERE tbl_votos.id_eleccion = ?";
 
+            //DELETE FROM tbl_cadidatosxeleccion WHERE id_eleccion = ? AND id_candidato = ?
             PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
 
             sentencia.setInt(1, idE);
-            sentencia.setString(2, idCandidato);
+            //sentencia.setString(2, idCandidato);
+
+            int resultado = sentencia.executeUpdate();
+
+            if (resultado >= 1) {
+                mensaje.CambiarMensaje(mensaje.OK, "Has eliminado a la una asociación: ");
+            } else {
+
+                mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");
+            }
+
+            return mensaje;
+
+        } catch (Exception e) {
+            mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+            return mensaje;
+        }
+
+    }
+
+    public ClsMensaje ActualizarEleccion(ClsEleccion eleccion) {
+
+        ClsMensaje mensaje = new ClsMensaje();
+
+        try {
+
+            String sql = "UPDATE tbl_elecciones SET nombre = ?, tipo = ?, fecha_inicio = ?, fecha_fin = ? WHERE id_eleccion = ?";
+
+            PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
+            sentencia.setString(1, eleccion.getNombre());
+            sentencia.setString(2, eleccion.getTipo());
+            sentencia.setString(3, eleccion.getFechaInicio());
+            sentencia.setString(4, eleccion.getFechaFin());
+            sentencia.setInt(5, eleccion.getIdEleccion());
 
             int resultado = sentencia.executeUpdate();
 
             if (resultado == 1) {
-                mensaje.CambiarMensaje(mensaje.OK, "Has eliminado a la una asociación: ");
+                mensaje.CambiarMensaje(mensaje.OK, "Has editado la elección exitosamente");
+            } else {
+
+                mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");
+            }
+
+            return mensaje;
+
+        } catch (Exception e) {
+            mensaje.CambiarMensaje(mensaje.ERROR, "Excepción: " + e.getMessage());
+            return mensaje;
+        }
+
+    }
+
+    public ClsMensaje ActualizarEstado(ClsEleccion eleccion) {
+
+        ClsMensaje mensaje = new ClsMensaje();
+
+        try {
+
+            String sql = "UPDATE tbl_elecciones SET estado = ? WHERE id_eleccion = ?";
+
+            PreparedStatement sentencia = this.jdbc.conexion.prepareStatement(sql);
+            sentencia.setString(1, eleccion.getEstado());
+            sentencia.setInt(2, eleccion.getIdEleccion());
+
+            int resultado = sentencia.executeUpdate();
+
+            if (resultado == 1) {
+                mensaje.CambiarMensaje(mensaje.OK, "Has cambiado el estado de la elección");
             } else {
 
                 mensaje.CambiarMensaje(mensaje.ERROR, "Error no encontrado");

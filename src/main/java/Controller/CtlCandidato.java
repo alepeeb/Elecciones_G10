@@ -14,15 +14,15 @@ public class CtlCandidato {
         this.modelo = new MdlCandidato();
     }
 
-    public boolean AgregarCandidato(ClsCandidato candidato) {
+    public ClsMensaje AgregarCandidato(ClsCandidato candidato) {
 
-        boolean respuesta = this.modelo.AgregarCandidato(candidato);
+        ClsMensaje respuesta = this.modelo.AgregarCandidato(candidato);
 
         return respuesta;
     }
 
-    public boolean EliminarCandidato(String candidato) {
-        boolean respuesta = this.modelo.EliminarCandidato(candidato);
+    public ClsMensaje EliminarCandidato(String candidato) {
+        ClsMensaje respuesta = this.modelo.EliminarCandidato(candidato);
         return respuesta;
     }
 
@@ -30,8 +30,8 @@ public class CtlCandidato {
         return this.modelo.ObtenerCandidatos();
     }
 
-    public boolean ActualizarCandidato(ClsCandidato candidato) {
-        boolean respuesta = this.modelo.ActualizarCandidato(candidato);
+    public ClsMensaje ActualizarCandidato(ClsCandidato candidato) {
+        ClsMensaje respuesta = this.modelo.ActualizarCandidato(candidato);
         return respuesta;
     }
 

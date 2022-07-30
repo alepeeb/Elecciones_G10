@@ -4,11 +4,20 @@ import Classes.ClsCandidato;
 import Classes.ClsMensaje;
 import Classes.ClsPropuesta;
 import Controller.CtlCandidato;
+import java.awt.Color;
 import java.util.LinkedList;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class JFgestionarCandidatos extends javax.swing.JFrame {
+
+    //Icono Mensaje Cambpos vacios
+    ImageIcon iconFormulario = new ImageIcon("src/main/resources/imgs/form.png");
+    //Icono Mensaje Good
+    ImageIcon iconGood = new ImageIcon("src/main/resources/imgs/thumbs-up.png");
+    //Icono Mensaje Warning
+    ImageIcon iconWarning = new ImageIcon("src/main/resources/imgs/warning.png");
 
     CtlCandidato controlador;
     LinkedList<ClsCandidato> candidatos;
@@ -22,6 +31,8 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         this.btnEditar.setVisible(false);
         this.btnEliminar.setVisible(false);
         this.btnNuevo.setVisible(false);
+        this.editarPropuesta.setEnabled(false);
+        this.eliminarPropuesta.setEnabled(false);
     }
 
     public void ObtenerCandidatos() {
@@ -125,6 +136,57 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         }
     }
 
+// :::::::::::: Validaciones
+    public boolean Validaciones(int tipo, String campo) {
+
+        switch (tipo) {
+            case 1: // nombre
+                if (campo.matches("^[a-zA-ZÀ-ÿ\\s]{1,40}$")) {
+                    this.labelNombre.setForeground(Color.black);
+                    return true;
+                } else {
+                    this.labelNombre.setForeground(Color.red);
+                }
+                break;
+            case 2: // Documento
+                if (campo.matches("[0-9]*")) {
+                    this.labelDocumento.setForeground(Color.black);
+                    return true;
+                } else {
+                    this.labelDocumento.setForeground(Color.red);
+                }
+                break;
+            case 3: // Teléfono
+                if (campo.matches("^\\d{7,10}$")) {
+                    this.labelTelefono.setForeground(Color.black);
+                    return true;
+                } else {
+                    this.labelTelefono.setForeground(Color.red);
+                }
+                break;
+            case 4: // Correo
+                if (campo.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
+                    this.labelCorreo.setForeground(Color.black);
+                    return true;
+                } else {
+                    this.labelCorreo.setForeground(Color.red);
+                }
+                break;
+            case 5: // Ciudad Origen
+                if (campo.matches("^[a-zA-ZÀ-ÿ\\s]{1,40}$")) {
+                    this.labelCiudadO.setForeground(Color.black);
+                    return true;
+                } else {
+                    this.labelCiudadO.setForeground(Color.red);
+                }
+                break;
+            default:
+                throw new AssertionError();
+        }
+
+        return false;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -133,17 +195,17 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         Jtable = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        labelNombre = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        labelDocumento = new javax.swing.JLabel();
         txtDocumento = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        labelTelefono = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        labelCorreo = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         comboPartidos = new javax.swing.JComboBox<>();
-        jLabel8 = new javax.swing.JLabel();
+        labelCiudadO = new javax.swing.JLabel();
         txtCiudadOrigen = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
@@ -186,38 +248,26 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
         jLabel1.setText("Gestionar Candidatos");
 
-        Jtable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JtableMouseClicked(evt);
-            }
-        });
-
         jPanel2.setBackground(java.awt.SystemColor.menu);
 
-        jLabel2.setText("Nombre");
+        labelNombre.setText("Nombre*");
 
-        jLabel3.setText("Número documento");
+        labelDocumento.setText("Número documento*");
 
-        jLabel4.setText("Teléfono");
+        labelTelefono.setText("Teléfono*");
 
-        jLabel5.setText("Correo");
+        labelCorreo.setText("Correo*");
 
-        jLabel7.setText("Partido político");
+        jLabel7.setText("Partido político*");
 
-        comboPartidos.setBackground(java.awt.SystemColor.controlShadow);
         comboPartidos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Partido Liberal Colombiano", "Partido Conservador Colombiano", "Movimiento Autoridades Indígenas de Colombia AICO", "Nuevo Liberalismo", "Partido Verde Oxigeno", "Unión Patriótica UP", "Salvacion nacional", "Partido Alianza Social Independiente ASI", "Partido Cambio Radical", "Partido Político Mira", "Partido Social de Unidad Nacional «Partido de la U»", "Partido Alianza Verde", "Partido Polo Democrático Alternativo", "Colombia Humana", "Partido Centro Democrático", "Movimiento Alternativo Indígena y Social MAIS", "Comunes", "Partido Colombia Justa Libres", "Partido Colombia Renaciente", "Partido ADA", "Partido Dignidad" }));
         comboPartidos.setFocusable(false);
-        comboPartidos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboPartidosActionPerformed(evt);
-            }
-        });
 
-        jLabel8.setText("Ciudad de origen");
+        labelCiudadO.setText("Ciudad de origen*");
 
         jLabel9.setText("Descripción");
 
-        jLabel11.setText("Mensaje Campaña");
+        jLabel11.setText("Mensaje Campaña*");
 
         btnEliminar.setBackground(new java.awt.Color(255, 204, 204));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -269,46 +319,45 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtNombre)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3)
-                            .addComponent(txtDocumento)
-                            .addComponent(txtCorreo))
-                        .addGap(42, 42, 42)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtMesajeC, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtCiudadOrigen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(comboPartidos, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel9))
-                        .addGap(299, 299, 299))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAgregar)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                    .addComponent(labelNombre)
+                    .addComponent(txtNombre)
+                    .addComponent(labelTelefono)
+                    .addComponent(labelCorreo)
+                    .addComponent(labelDocumento)
+                    .addComponent(txtDocumento)
+                    .addComponent(txtCorreo))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtMesajeC, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtCiudadOrigen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                        .addComponent(labelCiudadO, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(comboPartidos, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel9))
+                .addContainerGap(316, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(377, Short.MAX_VALUE)
+                .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAgregar)
+                .addGap(36, 36, 36))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel8))
+                    .addComponent(labelNombre)
+                    .addComponent(labelCiudadO))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -316,11 +365,11 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(labelDocumento)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
+                        .addComponent(labelTelefono)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -333,19 +382,19 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
                         .addComponent(txtDescripcion)))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                    .addComponent(labelCorreo)
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtMesajeC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29))
+                .addGap(30, 30, 30))
         );
 
         Jtable.addTab("Agregar candidato", jPanel2);
@@ -453,6 +502,7 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         editarPropuesta.setBackground(new java.awt.Color(204, 204, 255));
         editarPropuesta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit.png"))); // NOI18N
         editarPropuesta.setText("Actulizar");
+        editarPropuesta.setFocusPainted(false);
         editarPropuesta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editarPropuestaActionPerformed(evt);
@@ -460,11 +510,6 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         });
 
         txtCode.setEnabled(false);
-        txtCode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodeActionPerformed(evt);
-            }
-        });
 
         jLabel10.setText("ID propuesta");
 
@@ -642,44 +687,67 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         String mensajeCampania = txtMesajeC.getText();
         //String porpuestas = txtPropuestas.getText();
 
-        ClsCandidato candi = new ClsCandidato(numeroDocumento, nombre, telefono, correo, partido_politico, ciudad_origen, descripcion, mensajeCampania);
-        this.controlador.AgregarCandidato(candi);
-        this.ObtenerCandidatos();
-        LimbiarCampos();
+        if (nombre.equals("")
+                || numeroDocumento.equals("")
+                || telefono.equals("")
+                || correo.equals("")
+                || ciudad_origen.equals("")
+                || mensajeCampania.equals("")) {
 
+            JOptionPane.showMessageDialog(rootPane, "Debe completar los campos obligatorios (*)", null, 2, iconFormulario);
 
+        } else {
+            boolean a = Validaciones(1, nombre);
+            boolean b = Validaciones(2, numeroDocumento);
+            boolean c = Validaciones(3, telefono);
+            boolean d = Validaciones(4, correo);
+            boolean e = Validaciones(5, ciudad_origen);
+
+            if (a && b && c && d && e) {
+
+                ClsCandidato candi = new ClsCandidato(numeroDocumento, nombre, telefono, correo, partido_politico, ciudad_origen, descripcion, mensajeCampania);
+
+                ClsMensaje mensaje = this.controlador.AgregarCandidato(candi);
+
+                if (mensaje.getTipo().equals(mensaje.OK)) {
+                    this.ObtenerCandidatos();
+                    LimbiarCampos();
+                }
+                JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
+            }
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
-
-    private void comboPartidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPartidosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboPartidosActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-        int opction = JOptionPane.showConfirmDialog(rootPane, "¿desea eliminar a este candidato?");
-
-        System.out.println(opction);
+        int opction = JOptionPane.showConfirmDialog(rootPane, "¿Esta seguro que quiere eliminar este votante?", null, 2, 1, iconWarning);
 
         if (opction == 0) {
+
             int column = 0;
             int row = this.tblCandidato.getSelectedRow();
+
             String cedula = this.tblCandidato.getModel().getValueAt(row, column).toString();
-            this.controlador.EliminarCandidato(cedula);
-            this.ObtenerCandidatos();
 
-            JOptionPane.showMessageDialog(rootPane, "Canditado eliminado exitosamente");
+            ClsMensaje mensaje = this.controlador.EliminarCandidato(cedula);
+
+            if (mensaje.getTipo().equals(mensaje.OK)) {
+
+                this.ObtenerCandidatos();
+
+                this.txtDocumento.enable();
+
+                this.btnEliminar.setVisible(false);
+                this.btnEditar.setVisible(false);
+                this.btnNuevo.setVisible(false);
+                this.btnAgregar.setVisible(true);
+
+                LimbiarCampos();
+                LimpiarPropuestas();
+            }
+
+            JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
         }
-
-        this.txtDocumento.enable();
-
-        this.btnEliminar.setVisible(false);
-        this.btnEditar.setVisible(false);
-        this.btnNuevo.setVisible(false);
-        this.btnAgregar.setVisible(true);
-
-        LimbiarCampos();
-        LimpiarPropuestas();
-
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -716,8 +784,6 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
                 }
 
                 found = true;
-                //this.Jtable.setSelectedIndex(0);
-
                 break;
 
             }
@@ -766,13 +832,45 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         String partidoPolitico = this.comboPartidos.getSelectedItem().toString();
         candidato.setPartidoPolitico(partidoPolitico);
 
-        String mensaje = this.txtMesajeC.getText();
-        candidato.setMensajeCampania(mensaje);
+        String mensajeC = this.txtMesajeC.getText();
+        candidato.setMensajeCampania(mensajeC);
 
-        this.controlador.ActualizarCandidato(candidato);
-        this.ObtenerCandidatos();
-        this.LimbiarCampos();
+        String descripcion = this.txtDescripcion.getText();
+        candidato.setDescripcion(descripcion);
 
+        if (nombre.equals("")
+                || numeroDocumento.equals("")
+                || telefono.equals("")
+                || correo.equals("")
+                || ciudaOrigen.equals("")
+                || mensajeC.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Debe completar los campos obligatorios (*)", null, 2, iconFormulario);
+        } else {
+
+            boolean a = Validaciones(1, nombre);
+            boolean b = Validaciones(2, numeroDocumento);
+            boolean c = Validaciones(3, telefono);
+            boolean d = Validaciones(4, correo);
+            boolean e = Validaciones(5, ciudaOrigen);
+
+            if (a && b && c && d && e) {
+
+                ClsMensaje mensaje = this.controlador.ActualizarCandidato(candidato);
+
+                if (mensaje.getTipo().equals(mensaje.OK)) {
+
+                    this.ObtenerCandidatos();
+                    LimbiarCampos();
+
+                    this.btnEliminar.setVisible(false);
+                    this.btnEditar.setVisible(false);
+                    this.btnNuevo.setVisible(false);
+                    this.btnAgregar.setVisible(true);
+                }
+                JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
+            }
+
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void tblCandidatoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCandidatoMouseClicked
@@ -792,7 +890,8 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
 
             this.txtCorreo.setText(candidato.getCorreo());
 
-            //this.txtDescripcion.setText(candidato.getDescripcion());
+            this.txtDescripcion.setText(candidato.getDescripcion());
+
             this.comboPartidos.setSelectedItem(candidato.getPartidoPolitico());
 
             this.txtMesajeC.setText(candidato.getMensajeCampania());
@@ -801,7 +900,6 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
 
             this.txtDocumento.disable();
 
-            // tabla propuestas propuestas
             if (candidato != null) {
 
                 LinkedList<ClsPropuesta> propuestas = this.controlador.ObtenerPropuestas(cedula);
@@ -849,27 +947,36 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         String sector = this.comboSector.getSelectedItem().toString();
         String descripcion = this.descripcionPropuesta.getText();
 
-        //int column = 0;
-        //int row = tblCandidato.getSelectedRow();
-        //String cedula = tblCandidato.getModel().getValueAt(row, column).toString();
         String cedula = this.txtIdCandidato.getText(); // prueba
         ClsCandidato candidato = this.BuscarCandidato(cedula);
 
         if (candidato != null) {
 
-            ClsPropuesta propuesta = new ClsPropuesta(cedula, sector, descripcion);
+            if (descripcion.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "No puede agregar una propuesta vacia", null, 2, iconWarning);
+            } else {
+                ClsPropuesta propuesta = new ClsPropuesta(cedula, sector, descripcion);
 
-            ClsMensaje respuesta = this.controlador.AgregarPropuesta(propuesta);
+                ClsMensaje respuesta = this.controlador.AgregarPropuesta(propuesta);
 
-            if (respuesta.getTipo().equals(ClsMensaje.OK)) {
-                propuesta.setIdPropuesta(respuesta.getData());
-                candidato.getPropuestas().add(propuesta);
-                this.ActualizarTablaPropuestas(candidato.getPropuestas());
+                if (respuesta.getTipo().equals(ClsMensaje.OK)) {
+
+                    propuesta.setIdPropuesta(respuesta.getData());
+                    candidato.getPropuestas().add(propuesta);
+                    this.ActualizarTablaPropuestas(candidato.getPropuestas());
+
+                    this.ObtenerPropuestas(cedula);
+                    LimpiarPropuestas();
+                    ActualizarTablaPropuestas(propuestas);
+                }
             }
 
             this.descripcionPropuesta.setText("");
 
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Por favor seleccione un candidato", null, 2, iconWarning);
         }
+
 
     }//GEN-LAST:event_agregarPropuestaActionPerformed
 
@@ -890,16 +997,16 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
 
         if (mensaje.getTipo().equals(mensaje.OK)) {
             this.ObtenerPropuestas(idCandidato);
+
+            this.editarPropuesta.setEnabled(false);
+            this.eliminarPropuesta.setEnabled(false);
+            this.agregarPropuesta.setEnabled(true);
             LimpiarPropuestas();
         }
 
-        JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion());
+        JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
 
     }//GEN-LAST:event_editarPropuestaActionPerformed
-
-    private void JtableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtableMouseClicked
-
-    }//GEN-LAST:event_JtableMouseClicked
 
     private void tblPropuestasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPropuestasMouseClicked
 
@@ -922,6 +1029,10 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
             this.descripcionPropuesta.setText(propuesta.getDescripcion());
             this.txtCode.setText(propuesta.getIdPropuesta());
             this.txtIdCandidato.setText(propuesta.getIdCandidato());
+
+            this.editarPropuesta.setEnabled(true);
+            this.eliminarPropuesta.setEnabled(true);
+            this.agregarPropuesta.setEnabled(false);
         }
 
     }//GEN-LAST:event_tblPropuestasMouseClicked
@@ -931,17 +1042,27 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         String idPropuesta = this.txtCode.getText();
         String idCandidato = this.txtIdCandidato.getText();
 
-        ClsMensaje mensaje = this.controlador.EliminarPropuesta(idPropuesta);
+        int opction = JOptionPane.showConfirmDialog(rootPane, "¿Esta seguro que quiere eliminar este propuesta?", null, 2, 1, iconWarning);
 
-        if (mensaje.getTipo().equals(mensaje.OK)) {
-            this.ObtenerPropuestas(idCandidato);
+        if (opction == 0) {
 
-            LimpiarPropuestas();
-            //this.txtCode.setText("");
-            //this.descripcionPropuesta.setText("");
+            ClsMensaje mensaje = this.controlador.EliminarPropuesta(idPropuesta);
+
+            if (mensaje.getTipo().equals(mensaje.OK)) {
+
+                this.ObtenerPropuestas(idCandidato);
+                
+                ActualizarTablaPropuestas(propuestas);
+                
+                this.eliminarPropuesta.setEnabled(false);
+                this.editarPropuesta.setEnabled(false);
+                this.agregarPropuesta.setEnabled(true);
+                LimpiarPropuestas();
+
+            }
+
+            JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
         }
-
-        JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion());
 
         /*
         int opction = JOptionPane.showConfirmDialog(rootPane, "¿desea eliminar a esta propesta?");
@@ -959,18 +1080,7 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
         }
 
          */
-        //this.txtDocumento.enable();
-        //this.btnEliminar.setVisible(false);
-        //this.btnEditar.setVisible(false);
-        //this.btnNuevo.setVisible(false);
-        //this.btnAgregar.setVisible(true);
-        //LimbiarCampos();
-        //this.descripcionPropuesta.setText("");
     }//GEN-LAST:event_eliminarPropuestaActionPerformed
-
-    private void txtCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1027,13 +1137,8 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -1043,6 +1148,11 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel labelCiudadO;
+    private javax.swing.JLabel labelCorreo;
+    private javax.swing.JLabel labelDocumento;
+    private javax.swing.JLabel labelNombre;
+    private javax.swing.JLabel labelTelefono;
     private javax.swing.JTable tblCandidato;
     private javax.swing.JTable tblPropuestas;
     private javax.swing.JTextField txtCiudadOrigen;
