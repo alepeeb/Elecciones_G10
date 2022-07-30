@@ -37,14 +37,12 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
 
     public void ObtenerCandidatos() {
 
-        //LinkedList<ClsCandidato> candidatos = this.controlador.ObtenerCandidatos();
         this.candidatos = this.controlador.ObtenerCandidatos();
         this.ActalizarTabla(candidatos);
     }
 
     public void ObtenerPropuestas(String idCandidato) {
 
-        //LinkedList<ClsCandidato> candidatos = this.controlador.ObtenerCandidatos();
         this.propuestas = this.controlador.ObtenerPropuestas(idCandidato);
         this.ActualizarTablaPropuestas(propuestas);
     }
@@ -770,7 +768,6 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
                 if (candidato != null) {
 
                     LinkedList<ClsPropuesta> propuestas = this.controlador.ObtenerPropuestas(code);
-
                     if (propuestas != null) {
                         candidato.setPropuestas(propuestas);
                         this.ActualizarTablaPropuestas(candidato.getPropuestas());
@@ -778,14 +775,10 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
                         this.comboSector.setSelectedItem("");
                         this.descripcionPropuesta.setText("");
                         this.txtIdCandidato.setText(candidato.getNumeroDocumento());
-
                     }
-
                 }
-
                 found = true;
                 break;
-
             }
         }
 
@@ -1051,9 +1044,9 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
             if (mensaje.getTipo().equals(mensaje.OK)) {
 
                 this.ObtenerPropuestas(idCandidato);
-                
+
                 ActualizarTablaPropuestas(propuestas);
-                
+
                 this.eliminarPropuesta.setEnabled(false);
                 this.editarPropuesta.setEnabled(false);
                 this.agregarPropuesta.setEnabled(true);
@@ -1063,23 +1056,6 @@ public class JFgestionarCandidatos extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(rootPane, mensaje.getDescripcion(), null, 2, iconGood);
         }
-
-        /*
-        int opction = JOptionPane.showConfirmDialog(rootPane, "¿desea eliminar a esta propesta?");
-
-        if (opction == 0) {
-            int column = 0;
-            int row = this.tblPropuestas.getSelectedRow();
-            String id = this.tblPropuestas.getModel().getValueAt(row, column).toString();
-
-            ClsMensaje mensaje = this.controlador.EliminarCandidato(id);
-
-            this.ActualizarTablaPropuestas(propuestas);
-
-            JOptionPane.showMessageDialog(rootPane, "Propuesta eliminado exitosamente");
-        }
-
-         */
     }//GEN-LAST:event_eliminarPropuestaActionPerformed
 
     /**

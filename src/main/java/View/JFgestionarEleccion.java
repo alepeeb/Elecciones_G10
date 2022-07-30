@@ -86,11 +86,9 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) this.tblListaCandidatosElecciones.getModel();
 
         model.setRowCount(0);
-        
-        
 
         for (ClsCandidato candidato : lista) {
-            
+
             Object[] row = {candidato.getNumeroDocumento(), candidato.getNombre(), candidato.getVotos(), ""};
             model.addRow(row);
         }
@@ -519,7 +517,7 @@ public class JFgestionarEleccion extends javax.swing.JFrame {
             int column = 0;
             int row = this.tblListaElecciones.getSelectedRow();
             String idEleccion = this.tblListaElecciones.getModel().getValueAt(row, column).toString();
-            
+
             ClsMensaje mensaje = this.controladorEleccion.EliminarEleccion(idEleccion);
 
             if (mensaje.getTipo().equals(mensaje.OK)) {

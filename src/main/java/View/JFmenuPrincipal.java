@@ -19,7 +19,6 @@ public class JFmenuPrincipal extends javax.swing.JFrame {
         btnGestionarCandidato = new javax.swing.JButton();
         btnAgregarVotantes = new javax.swing.JButton();
         btnVotar = new javax.swing.JButton();
-        btnResultados = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         btnGestionarEleccion = new javax.swing.JButton();
 
@@ -63,17 +62,6 @@ public class JFmenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnResultados.setBackground(new java.awt.Color(204, 204, 255));
-        btnResultados.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnResultados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/grafico.png"))); // NOI18N
-        btnResultados.setText("Resultados");
-        btnResultados.setFocusPainted(false);
-        btnResultados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnResultadosActionPerformed(evt);
-            }
-        });
-
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/votaciones.png"))); // NOI18N
 
         btnGestionarEleccion.setBackground(java.awt.SystemColor.controlHighlight);
@@ -92,36 +80,32 @@ public class JFmenuPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(btnGestionarCandidato)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGestionarEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAgregarVotantes)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                        .addComponent(btnVotar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(126, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(154, 154, 154))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(114, 114, 114)
+                .addComponent(btnGestionarCandidato)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnResultados)
-                .addGap(38, 38, 38))
+                .addComponent(btnGestionarEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAgregarVotantes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVotar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(177, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(168, 168, 168)
+                .addGap(163, 163, 163)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btnGestionarCandidato, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAgregarVotantes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGestionarEleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnVotar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(104, 104, 104))
+                .addGap(109, 109, 109))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -138,12 +122,6 @@ public class JFmenuPrincipal extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultadosActionPerformed
-        JFresultados menuR = new JFresultados();
-        menuR.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_btnResultadosActionPerformed
 
     private void btnAgregarVotantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarVotantesActionPerformed
         JFagregarVotantes menuAV = new JFagregarVotantes();
@@ -208,7 +186,6 @@ public class JFmenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregarVotantes;
     private javax.swing.JButton btnGestionarCandidato;
     private javax.swing.JButton btnGestionarEleccion;
-    private javax.swing.JButton btnResultados;
     private javax.swing.JButton btnVotar;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

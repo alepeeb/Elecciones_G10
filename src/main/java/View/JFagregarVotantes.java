@@ -33,11 +33,8 @@ public class JFagregarVotantes extends javax.swing.JFrame {
     }
 
     public void ObtenerVotantes() {
-
-        //LinkedList<ClsVotante> votantes = this.controlador.ObtenerVotantes();
         this.votantes = this.controlador.ObtenerVotantes();
         this.ActalizarTabla(votantes);
-
     }
 
     public ClsVotante BuscarVotante(String id) {
@@ -47,7 +44,6 @@ public class JFagregarVotantes extends javax.swing.JFrame {
             if (votante.getNumeroDocumento().equals(id)) {
                 return votante;
             }
-
         }
 
         return null;
@@ -64,9 +60,7 @@ public class JFagregarVotantes extends javax.swing.JFrame {
 
             Object[] row = {votante.getNumeroDocumento(), votante.getNombre(), votante.getTelefono(), votante.getCorreo(), votante.getDireccion()};
             model.addRow(row);
-
         }
-
     }
 
     public void LimbiarCampos() {
@@ -174,12 +168,6 @@ public class JFagregarVotantes extends javax.swing.JFrame {
 
         labelDocumento.setText("Número documento*");
         labelDocumento.setToolTipText("");
-
-        txtDocumento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDocumentoActionPerformed(evt);
-            }
-        });
 
         labelTelefono.setText("Teléfono*");
 
@@ -459,10 +447,6 @@ public class JFagregarVotantes extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-
-    private void txtDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDocumentoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDocumentoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
 
